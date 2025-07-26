@@ -1,8 +1,10 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, Variants, Easing } from "framer-motion"
+
 import { useInView } from "framer-motion"
 import { useRef } from "react"
+import Image from "next/image"
 import { Github, ExternalLink, Code, ArrowUpRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -90,14 +92,19 @@ export default function ProjectsSection() {
     },
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
+ const easeCurve: Easing = [0.42, 0, 0.58, 1] // Equivalent to "easeInOut"
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: easeCurve, // ✅ correct type
     },
-  }
+  },
+}
 
   const handleGitHubClick = () => {
     window.open("https://github.com/Vijayabhava", "_blank")
@@ -163,11 +170,12 @@ export default function ProjectsSection() {
                   {/* Project Image */}
                   <div className="relative overflow-hidden h-48">
                     <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20`}></div>
-                    <img
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
+                   <Image
+  src={project.image || "/placeholder.svg"}
+  alt={project.title}
+  fill
+  className="object-cover transition-transform duration-700 group-hover:scale-110"
+/>
 
                     {/* Overlay Gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -295,6 +303,6 @@ export default function ProjectsSection() {
           </motion.div>
         </motion.div>
       </div>
-    </section>
+          </section>
   )
 }

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
+ import { Variants, Easing } from "framer-motion"
 import { useRef } from "react"
 import { GraduationCap, Calendar, Award } from "lucide-react"
 
@@ -44,14 +45,22 @@ export default function EducationSection() {
     },
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
+ 
+
+const easeCurve: Easing = [0.42, 0, 0.58, 1]
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.6,
+      ease: easeCurve,
     },
-  }
+  },
+}
+
 
   return (
     <section ref={ref} className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">

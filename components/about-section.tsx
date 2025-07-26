@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
@@ -41,7 +42,7 @@ export default function AboutSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
+      transition: { duration: 0.8, ease: "easeOut" as const }, // ✅ fixed here
     },
   }
 
@@ -65,9 +66,11 @@ export default function AboutSection() {
             <motion.div variants={itemVariants} className="text-center md:text-left">
               <div className="relative inline-block mb-8">
                 <div className="w-64 h-64 mx-auto md:mx-0 rounded-full overflow-hidden border-4 border-blue-600 shadow-2xl">
-                  <img
+                  <Image
                     src="/images/sumit-profile.png"
                     alt="Sumit Sharma"
+                    width={256}
+                    height={256}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -79,7 +82,7 @@ export default function AboutSection() {
 
             <motion.div variants={itemVariants} className="space-y-6">
               <p className="text-lg text-slate-600 leading-relaxed">
-                I'm a passionate Software Developer with expertise in web development and AI technologies. I love
+                I&apos;m a passionate Software Developer with expertise in web development and AI technologies. I love
                 creating innovative solutions that make a real impact. My journey in tech has been driven by curiosity
                 and a desire to solve complex problems through code.
               </p>
@@ -122,7 +125,7 @@ export default function AboutSection() {
 
           {/* Interests Section */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-semibold text-slate-800 text-center mb-8">What I'm Passionate About</h3>
+            <h3 className="text-2xl font-semibold text-slate-800 text-center mb-8">What I&apos;m Passionate About</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {interests.map((interest, index) => (
                 <motion.div

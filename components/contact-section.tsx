@@ -1,14 +1,38 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
-import { Phone, Mail, Github, Linkedin, MapPin } from "lucide-react"
-import Globe3D from "@/components/globe-3d"
+import { motion, useInView, Variants, Easing } from "framer-motion";
+import { useRef } from "react";
+import { Phone, Mail, Github, Linkedin, MapPin } from "lucide-react";
+import Globe3D from "@/components/globe-3d";
+
+const easeCurve: Easing = [0.42, 0, 0.58, 1];
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: easeCurve,
+    },
+  },
+};
 
 export default function ContactSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const contactInfo = [
     {
@@ -35,27 +59,7 @@ export default function ContactSection() {
       value: "sumit-sharma-b29858272",
       href: "https://www.linkedin.com/in/sumit-sharma-b29858272/",
     },
-  ]
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  }
+  ];
 
   return (
     <section
@@ -76,17 +80,16 @@ export default function ContactSection() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-sky-400 mx-auto mb-6"></div>
             <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Let's connect and discuss opportunities to work together on exciting projects.
+              Let&apos;s connect and discuss opportunities to work together on exciting projects.
             </p>
           </motion.div>
 
-          {/* Interactive Globe */}
           <motion.div variants={itemVariants} className="flex justify-center mb-16">
             <Globe3D />
           </motion.div>
 
           <motion.div variants={itemVariants} className="grid md:grid-cols-2 gap-8 mb-16">
-            {contactInfo.map((contact, index) => (
+            {contactInfo.map((contact) => (
               <motion.a
                 key={contact.label}
                 href={contact.href}
@@ -118,7 +121,6 @@ export default function ContactSection() {
         </motion.div>
       </div>
 
-      {/* Footer */}
       <motion.footer variants={itemVariants} className="border-t border-white/20 mt-16 pt-8">
         <div className="container mx-auto px-6">
           <div className="text-center">
@@ -127,5 +129,5 @@ export default function ContactSection() {
         </div>
       </motion.footer>
     </section>
-  )
+  );
 }

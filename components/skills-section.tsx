@@ -1,9 +1,10 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, Variants, Easing } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
 import { Code, Database, Globe, GitBranch } from "lucide-react"
+import Image from "next/image"
 
 export default function SkillsSection() {
   const ref = useRef(null)
@@ -116,14 +117,19 @@ export default function SkillsSection() {
     },
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+  const easeCurve: Easing = [0.42, 0, 0.58, 1] // Equivalent to "easeInOut"
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: easeCurve, // ✅ correct type
     },
-  }
+  },
+}
 
   return (
     <section ref={ref} className="py-20 bg-white">
@@ -178,7 +184,6 @@ export default function SkillsSection() {
           <motion.div variants={itemVariants} className="overflow-hidden">
             <h3 className="text-2xl font-semibold text-slate-800 text-center mb-8">Technologies I Work With</h3>
             <div className="relative">
-              {/* Gradient overlays for smooth fade effect */}
               <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
               <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
 
@@ -191,25 +196,15 @@ export default function SkillsSection() {
                     transition={{ duration: 0.2 }}
                   >
                     <div className="flex items-center space-x-3 px-6 py-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 min-w-[180px]">
-                      <div className="relative">
-                        <img
-                          src={tech.logo || "/placeholder.svg"}
+                      <div className="relative w-8 h-8">
+                        <Image
+                          src={tech.logo}
                           alt={`${tech.name} logo`}
-                          className="w-8 h-8 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
-                          style={{
-                            filter: "grayscale(100%)",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.filter = "grayscale(0%)"
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.filter = "grayscale(100%)"
-                          }}
+                          fill
+                          sizes="32px"
+                          className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                          style={{ backgroundColor: tech.color, borderRadius: "4px" }}
                         />
-                        <div
-                          className="absolute inset-0 rounded opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-                          style={{ backgroundColor: tech.color }}
-                        ></div>
                       </div>
                       <span className="text-slate-700 font-medium group-hover:text-blue-700 transition-colors duration-300">
                         {tech.name}

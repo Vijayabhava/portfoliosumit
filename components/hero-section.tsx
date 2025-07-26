@@ -1,7 +1,9 @@
 "use client"
 
-import { motion } from "framer-motion"
+
 import { Download, Mail, Github, Linkedin } from "lucide-react"
+import { motion, Variants, Easing } from "framer-motion"
+
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 
@@ -21,7 +23,7 @@ export default function HeroSection() {
       setCurrentText((prev) => (prev + 1) % dynamicTexts.length)
     }, 3000)
     return () => clearInterval(interval)
-  }, [])
+  }, [dynamicTexts.length]) // ✅ FIX: include dependency
 
   const handleDownloadResume = () => {
     window.open("https://drive.google.com/file/d/1JSCml7IEvfDp-9-GU2_5K1qDGJDz__oe/view?usp=sharing", "_blank")
@@ -45,14 +47,25 @@ export default function HeroSection() {
     },
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
+ // At the very top of your file
+
+
+
+// Define your custom easing curve
+const easeCurve: Easing = [0.42, 0, 0.58, 1] // Equivalent to "easeInOut"
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: easeCurve, // ✅ correct type
     },
-  }
+  },
+}
+
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
@@ -95,7 +108,7 @@ export default function HeroSection() {
 
         <motion.div variants={itemVariants}>
           <p className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-            "Transforming ideas into impactful digital solutions"
+            &quot;Transforming ideas into impactful digital solutions&quot;
           </p>
         </motion.div>
 
