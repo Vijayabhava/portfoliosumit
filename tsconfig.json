@@ -23,20 +23,15 @@
         "name": "next"
       }
     ],
-    "types": ["node", "jest"]
+    "types": ["node"]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
-    "**/*.test.ts",
-    "**/__tests__/**/*"
+    "node_modules"
   ]
 }
