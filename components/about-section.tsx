@@ -65,7 +65,11 @@ export default function AboutSection() {
             <motion.div variants={itemVariants} className="text-center md:text-left">
               <div className="relative inline-block mb-8">
                 <div className="w-64 h-64 mx-auto md:mx-0 rounded-full overflow-hidden border-4 border-blue-600 shadow-2xl">
-                  <img src="/images/sumit-profile.png" alt="Sumit Sharma" className="w-full h-full object-cover" />
+                  <img
+                    src="/images/sumit-profile.png"
+                    alt="Sumit Sharma"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-gradient-to-r from-blue-600 to-sky-400 rounded-full flex items-center justify-center">
                   <span className="text-white text-2xl">👋</span>
@@ -83,7 +87,7 @@ export default function AboutSection() {
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-slate-800 mb-4">Core Strengths</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {["Teamwork", "Problem-solving", "Adaptability", "Leadership"].map((skill, index) => (
+                  {["Teamwork", "Problem-solving", "Adaptability", "Leadership"].map((skill) => (
                     <motion.div
                       key={skill}
                       className="bg-gradient-to-r from-blue-50 to-sky-50 p-3 rounded-lg border-l-4 border-blue-600"
@@ -100,7 +104,7 @@ export default function AboutSection() {
 
           {/* Stats Section */}
           <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-            {stats.map((stat, index) => (
+            {stats.map((stat) => (
               <motion.div
                 key={stat.label}
                 className="text-center p-6 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl border border-slate-100 hover:shadow-lg transition-all duration-300"
@@ -125,10 +129,9 @@ export default function AboutSection() {
                   key={interest.name}
                   className={`p-4 rounded-xl bg-gradient-to-r ${interest.color} text-white text-center hover:shadow-lg transition-all duration-300`}
                   whileHover={{ scale: 1.05, rotate: 2 }}
-                  transition={{ duration: 0.2 }}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ duration: 0.2, delay: index * 0.1 }}
                 >
                   <div className="text-2xl mb-2">{interest.icon}</div>
                   <div className="font-medium text-sm">{interest.name}</div>
