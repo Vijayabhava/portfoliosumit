@@ -1,13 +1,14 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+
 import { Download, Mail, Github, Linkedin } from "lucide-react"
+import { motion, Variants, Easing } from "framer-motion"
+
 import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react"
 
-export default function MergedHero() {
-  const gradientRef = useRef<HTMLDivElement>(null)
+export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0)
-
   const dynamicTexts = [
     "CSE UnderGrad",
     "Software Developer",
@@ -21,52 +22,11 @@ export default function MergedHero() {
     const interval = setInterval(() => {
       setCurrentText((prev) => (prev + 1) % dynamicTexts.length)
     }, 3000)
-
-    const gradient = gradientRef.current
-    const onMouseMove = (e: MouseEvent) => {
-      if (gradient) {
-        gradient.style.left = `${e.clientX - 192}px`
-        gradient.style.top = `${e.clientY - 192}px`
-        gradient.style.opacity = "1"
-      }
-    }
-    const onMouseLeave = () => {
-      if (gradient) gradient.style.opacity = "0"
-    }
-
-    const onClick = (e: MouseEvent) => {
-      const ripple = document.createElement("div")
-      ripple.style.position = "fixed"
-      ripple.style.left = `${e.clientX}px`
-      ripple.style.top = `${e.clientY}px`
-      ripple.style.width = "4px"
-      ripple.style.height = "4px"
-      ripple.style.background = "rgba(96, 165, 250, 0.5)" // soft blue
-      ripple.style.borderRadius = "50%"
-      ripple.style.transform = "translate(-50%, -50%)"
-      ripple.style.pointerEvents = "none"
-      ripple.style.animation = "pulse-glow 1s ease-out forwards"
-      document.body.appendChild(ripple)
-      setTimeout(() => ripple.remove(), 1000)
-    }
-
-    document.addEventListener("mousemove", onMouseMove)
-    document.addEventListener("mouseleave", onMouseLeave)
-    document.addEventListener("click", onClick)
-
-    return () => {
-      clearInterval(interval)
-      document.removeEventListener("mousemove", onMouseMove)
-      document.removeEventListener("mouseleave", onMouseLeave)
-      document.removeEventListener("click", onClick)
-    }
-  }, [])
+    return () => clearInterval(interval)
+  }, [dynamicTexts.length]) // ✅ FIX: include dependency
 
   const handleDownloadResume = () => {
-    window.open(
-      "https://drive.google.com/file/d/1JSCml7IEvfDp-9-GU2_5K1qDGJDz__oe/view?usp=sharing",
-      "_blank"
-    )
+    window.open("https://drive.google.com/file/d/1JSCml7IEvfDp-9-GU2_5K1qDGJDz__oe/view?usp=sharing", "_blank")
   }
 
   const handleContactMe = () => {
@@ -76,34 +36,90 @@ export default function MergedHero() {
     }
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+        delayChildren: 0.2,
+      },
+    },
+  }
+
+ // At the very top of your file
+
+
+
+// Define your custom easing curve
+const easeCurve: Easing = [0.42, 0, 0.58, 1] // Equivalent to "easeInOut"
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: easeCurve, // ✅ correct type
+    },
+  },
+}
+
+
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-[#0a0e23] via-[#0f172a] to-[#1e3a8a] text-white overflow-hidden">
-      <div
-        ref={gradientRef}
-        className="pointer-events-none fixed z-10 h-[384px] w-[384px] rounded-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/20 to-transparent opacity-0 transition-opacity duration-300"
-      />
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-400/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-600/5 to-sky-400/5 rounded-full blur-3xl"></div>
+      </div>
 
-      <div className="relative z-20 flex flex-col items-center justify-center text-center px-6 py-24 md:py-32 md:px-12">
-        <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6 tracking-tight text-blue-400">
-          Sumit Sharma
-        </h1>
+      <motion.div
+        className="container mx-auto px-6 text-center relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={itemVariants}>
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
+            <span className="bg-gradient-to-r from-blue-400 to-sky-300 bg-clip-text text-transparent">
+              Sumit Sharma
+            </span>
+          </h1>
+        </motion.div>
 
-        <div className="text-2xl md:text-3xl font-medium text-slate-200 mb-4 h-10">
-          <span className="inline-block animate-fadeIn transition-all duration-500">
-            {dynamicTexts[currentText]}
-          </span>
-          <span className="text-blue-400"> | Web & AI Enthusiast</span>
-        </div>
+        <motion.div variants={itemVariants} className="h-16 flex items-center justify-center">
+          <h2 className="text-xl md:text-2xl text-slate-300 mb-6 font-medium">
+            <motion.span
+              key={currentText}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="inline-block"
+            >
+              {dynamicTexts[currentText]}
+            </motion.span>
+            <span className="text-sky-400"> | Web & AI Enthusiast</span>
+          </h2>
+        </motion.div>
 
-        <p className="max-w-xl text-slate-400 mb-10 text-lg leading-relaxed">
-          Transforming ideas into impactful digital solutions.
-        </p>
+        <motion.div variants={itemVariants}>
+          <p className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+            &quot;Transforming ideas into impactful digital solutions&quot;
+          </p>
+        </motion.div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+        >
           <Button
             size="lg"
             onClick={handleDownloadResume}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
           >
             <Download className="w-5 h-5 mr-2" />
             Download Resume
@@ -112,32 +128,47 @@ export default function MergedHero() {
             size="lg"
             variant="outline"
             onClick={handleContactMe}
-            className="border-2 border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black px-8 py-3 rounded-full"
+            className="border-2 border-sky-400 text-sky-400 hover:bg-sky-400 hover:text-slate-900 px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 bg-transparent"
           >
             <Mail className="w-5 h-5 mr-2" />
             Contact Me
           </Button>
-        </div>
+        </motion.div>
 
-        <div className="flex justify-center space-x-6">
-          <a
+        <motion.div variants={itemVariants} className="flex justify-center space-x-6">
+          <motion.a
             href="https://github.com/Vijayabhava"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-slate-400 hover:text-blue-400 transition duration-300"
+            className="text-slate-400 hover:text-sky-400 transition-colors duration-300"
+            whileHover={{ scale: 1.2, rotate: 5 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <Github className="w-7 h-7" />
-          </a>
-          <a
+            <Github className="w-8 h-8" />
+          </motion.a>
+          <motion.a
             href="https://www.linkedin.com/in/sumit-sharma-b29858272/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-slate-400 hover:text-blue-400 transition duration-300"
+            className="text-slate-400 hover:text-sky-400 transition-colors duration-300"
+            whileHover={{ scale: 1.2, rotate: -5 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <Linkedin className="w-7 h-7" />
-          </a>
+            <Linkedin className="w-8 h-8" />
+          </motion.a>
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+      >
+        <div className="w-6 h-10 border-2 border-slate-400 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-slate-400 rounded-full mt-2"></div>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }
