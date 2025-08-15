@@ -67,11 +67,11 @@ export default function AboutSection() {
               <div className="relative inline-block mb-8">
                 <div className="w-64 h-64 mx-auto md:mx-0 rounded-full overflow-hidden border-4 border-blue-600 shadow-2xl">
                   <Image
-                    src="/images/sumit-profile.png"
+                    src="/images/sumit-profile.jpg"
                     alt="Sumit Sharma"
                     width={256}
                     height={256}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-gradient-to-r from-blue-600 to-sky-400 rounded-full flex items-center justify-center">
